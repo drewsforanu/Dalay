@@ -1,0 +1,29 @@
+from heapq import heappop, heappush
+
+def heuristic(a, b):
+    return abs(a[0] - b[0]) + abs(a[1] - b[1])
+
+def astar(grid, start, goal):
+    rows, cols = len(grid), len(grid[0])
+    open_set = []
+    heappush(open_set, (0 + heuristic(start, goal), 0, start, []))
+    visited = set()
+
+    while open_set:
+        _, cost, current, path = heappop(open_set)
+        if current in visited:
+            continue
+        path = path + [current]
+        if current == goal:
+            return path
+        visited.add(current)
+
+        for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            neighbor = (current[0] + dr, current[1] + dc)
+            if 0 <= neighbor[0] < rows and 0 <= neighbor[1] < cols and grid[neighbor[0]][neighbor[1]] == 0:
+                heappush(open_set, (cost + 1 + heuristic(neighbor, goal), cost + 1, neighbor, path))
+    return None
+
+grid = [[0, 1, 0, 0], [0, 1, 0, 1], [0, 0, 0, 0], [0, 1, 1, 0]]
+start, goal = (0, 0), (3, 3)
+print(astar(grid, start, goal))
