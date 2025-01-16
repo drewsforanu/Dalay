@@ -1,0 +1,21 @@
+import threading
+from queue import Queue
+import time
+
+def worker(task_queue):
+    while not task_queue.empty():
+        task = task_queue.get()
+        print(f\"Processing task: {task}\")  # Simulate processing
+        time.sleep(1)
+        task_queue.task_done()
+
+task_queue = Queue()
+for i in range(10):
+    task_queue.put(f\"Task-{i}\")
+
+threads = [threading.Thread(target=worker, args=(task_queue,)) for _ in range(3)]
+for thread in threads:
+    thread.start()
+
+task_queue.join()
+print(\"All tasks completed.\")
