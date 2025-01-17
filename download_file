@@ -1,0 +1,19 @@
+import threading
+import requests
+
+def download_file(url, filename):
+    response = requests.get(url)
+    with open(filename, 'wb') as f:
+        f.write(response.content)
+    print(f\"Downloaded {filename}\")
+
+urls = ['https://example.com/file1', 'https://example.com/file2']
+threads = []
+
+for i, url in enumerate(urls):
+    thread = threading.Thread(target=download_file, args=(url, f'file{i + 1}.txt'))
+    threads.append(thread)
+    thread.start()
+
+for thread in threads:
+    thread.join()
