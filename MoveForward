@@ -1,0 +1,14 @@
+void AMyCharacter::MoveForward(float Value)
+{
+    if (Value != 0.f)
+    {
+        FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetUnitAxis(EAxis::X);
+        AddMovementInput(Direction, Value);
+
+        // 播放音效
+        if (FootstepSound && !UGameplayStatics::IsPlaying(this, FootstepSound))
+        {
+            UGameplayStatics::PlaySoundAtLocation(this, FootstepSound, GetActorLocation());
+        }
+    }
+}
