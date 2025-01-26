@@ -1,0 +1,7 @@
+UFUNCTION(BlueprintImplementableEvent, Category = "Interaction")
+void OnInteract(AActor* Interactor);
+
+void AMyActor::Interact(AActor* Interactor)
+{
+	OnInteract(Interactor);
+}
