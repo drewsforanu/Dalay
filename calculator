@@ -1,0 +1,17 @@
+def calculator():
+    a = float(input("输入第一个数字: "))
+    op = input("输入运算符 (+, -, *, /): ")
+    b = float(input("输入第二个数字: "))
+
+    if op == '+':
+        print("结果:", a + b)
+    elif op == '-':
+        print("结果:", a - b)
+    elif op == '*':
+        print("结果:", a * b)
+    elif op == '/':
+        print("结果:", a / b)
+    else:
+        print("无效运算符")
+
+calculator()
