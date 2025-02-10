@@ -1,0 +1,20 @@
+import hashlib
+import json
+
+def generate_hash(data):
+    """
+    对给定数据生成 SHA-256 哈希
+    """
+    data_string = json.dumps(data, sort_keys=True)
+    return hashlib.sha256(data_string.encode()).hexdigest()
+
+# 示例数据
+block_data = {
+    'index': 1,
+    'transactions': [],
+    'timestamp': 1630234567,
+    'previous_hash': 'abc123',
+    'nonce': 0
+}
+
+print("区块哈希:", generate_hash(block_data))
