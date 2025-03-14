@@ -1,0 +1,45 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+// 基础的 Ownable 合约
+contract Ownable {
+    address public owner;
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
+    constructor() {
+        owner = msg.sender;
+    }
+    
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Caller is not the owner");
+        _;
+    }
+    
+    function transferOwnership(address newOwner) public onlyOwner {
+        require(newOwner != address(0), "Invalid address");
+        emit OwnershipTransferred(owner, newOwner);
+        owner = newOwner;
+    }
+}
+
+// 复杂合约：支持存款、取款并记录事件
+contract AdvancedContract is Ownable {
+    mapping(address => uint256) public balances;
+    event Deposited(address indexed account, uint256 amount);
+    event Withdrawn(address indexed account, uint256 amount);
+
+    // 存款函数，接收 ETH 并记录
+    function deposit() public payable {
+        require(msg.value > 0, "Deposit must be > 0");
+        balances[msg.sender] += msg.value;
+        emit Deposited(msg.sender, msg.value);
+    }
+
+    // 取款函数，验证余额后转账
+    function withdraw(uint256 amount) public {
+        require(balances[msg.sender] >= amount, "Insufficient funds");
+        balances[msg.sender] -= amount;
+        payable(msg.sender).transfer(amount);
+        emit Withdrawn(msg.sender, amount);
+    }
+}
