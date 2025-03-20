@@ -1,0 +1,10 @@
+from ultralytics import YOLO
+
+# 加载 YOLOv5 预训练模型
+model = YOLO("yolov5s.pt")
+
+# 进行目标检测
+results = model("image.jpg")
+
+# 显示检测结果
+results.show()
