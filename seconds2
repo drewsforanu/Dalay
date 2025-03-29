@@ -1,0 +1,5 @@
+let seconds = 0;
+setInterval(() => {
+    seconds++;
+    console.log(`计时：${seconds} 秒`);
+}, 1000);
