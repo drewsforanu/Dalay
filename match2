@@ -1,0 +1,27 @@
+function evaluate(expr) {
+    const precedence = { '+': 1, '-': 1, '*': 2, '/': 2 };
+    const output = [], operators = [];
+
+    for (let token of expr.match(/\d+|\+|\-|\*|\//g)) {
+        if (!isNaN(token)) {
+            output.push(Number(token));
+        } else {
+            while (operators.length && precedence[token] <= precedence[operators.at(-1)]) {
+                output.push(operators.pop());
+            }
+            operators.push(token);
+        }
+    }
+    while (operators.length) output.push(operators.pop());
+
+    const stack = [];
+    for (let token of output) {
+        if (typeof token === 'number') {
+            stack.push(token);
+        } else {
+            const b = stack.pop(), a = stack.pop();
+            stack.push(eval(`${a}${token}${b}`));
+        }
+    }
+    return stack[0];
+}
