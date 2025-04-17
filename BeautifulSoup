@@ -1,0 +1,26 @@
+import threading, queue, requests
+from bs4 import BeautifulSoup
+
+q = queue.Queue()
+urls = ['https://example.com/page{}'.format(i) for i in range(10)]
+
+def worker():
+    while not q.empty():
+        url = q.get()
+        try:
+            r = requests.get(url)
+            soup = BeautifulSoup(r.text, 'html.parser')
+            print(url, soup.title.string)
+        except:
+            print("失败:", url)
+        finally:
+            q.task_done()
+
+for url in urls:
+    q.put(url)
+
+for _ in range(5):
+    t = threading.Thread(target=worker)
+    t.start()
+
+q.join()
